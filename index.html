@@ -193,26 +193,68 @@
         }
 
       // WhatsApp Checkout Engine
-        function checkoutWhatsApp() {
+    // Open Payment Portal & Generate Dynamic UPI QR
+        function openPaymentPortal() {
             if (Object.keys(cart).length === 0) {
                 alert("Your cart is empty!");
                 return;
             }
 
-            // Grab the delivery address entered by the customer
             const address = document.getElementById('delivery-address').value.trim();
             if (!address) {
-                alert("Please enter your complete delivery address before placing the order!");
+                alert("Please enter your complete delivery address before proceeding!");
                 document.getElementById('delivery-address').focus();
                 return;
             }
 
-            // Replace with your real business WhatsApp number including country code (e.g., 919876543210)
+            // Calculate exact total
+            let total = 0;
+            Object.keys(cart).forEach(id => {
+                const item = vegetables.find(v => v.id == id);
+                if (item) total += item.price * cart[id];
+            });
+
+            // 1. SET YOUR MERCHANDISE DETAILS HERE
+            const merchantUPI = "sakthindex-6@oksbi"; // Replace with your actual GPay / PhonePe UPI ID
+            const merchantName = "Fresh Sivavinayk Grocer";   // Replace with your store name
+
+            // Generate UPI Payment Link & QR Code automatically
+            const upiLink = `upi://pay?pa=${merchantUPI}&pn=${encodeURIComponent(merchantName)}&am=${total}&cu=INR`;
+            const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(upiLink)}`;
+
+            // Populate Modal
+            document.getElementById('upi-qr-image').src = qrUrl;
+            document.getElementById('pay-amount').innerText = total;
+            document.getElementById('merchant-upi-text').innerText = merchantUPI;
+            document.getElementById('utr-number').value = ''; // Clear previous input
+
+            // Show Modal
+            document.getElementById('payment-modal').style.display = 'flex';
+        }
+
+        function closePaymentPortal() {
+            document.getElementById('payment-modal').style.display = 'none';
+        }
+
+        // WhatsApp Checkout Engine with Payment Verification
+        function checkoutWhatsApp() {
+            const utr = document.getElementById('utr-number').value.trim();
+            if (!utr || utr.length < 8) {
+                alert("Please enter a valid Transaction ID / UTR Number after completing your payment!");
+                document.getElementById('utr-number').focus();
+                return;
+            }
+
+            const address = document.getElementById('delivery-address').value.trim();
+            
+            // 2. SET YOUR WHATSAPP BUSINESS NUMBER HERE (with country code, e.g., 919876543210)
             const businessNumber = "918838090005"; 
             
-            let message = "*New Order Received from Fresh Grocer*\n\n";
+            let message = "*New Paid Order - Fresh Grocer*\n\n";
+            message += `*Payment Status:* PAID ✅\n`;
+            message += `*Transaction / UTR No:* ${utr}\n\n`;
             message += `*Delivery Address:*\n${address}\n\n`;
-            message += "*Order Details:*\n";
+            message += "*Order Summary:*\n";
             
             let total = 0;
             let index = 1;
@@ -226,39 +268,17 @@
                 }
             });
 
-            message += `\n*Grand Total: ₹${total}*\n\nPlease confirm my order and let me know when it will be delivered!`;
+            message += `\n*Grand Total Paid: ₹${total}*\n\nPlease verify my payment UTR and confirm order dispatch!`;
             
             const encodedMessage = encodeURIComponent(message);
             window.open(`https://api.whatsapp.com/send?phone=${businessNumber}&text=${encodedMessage}`, '_blank');
+            
+            // Close portal and empty cart after successful redirection
+            closePaymentPortal();
+            cart = {};
+            updateCartUI();
+            toggleCart();
         }
-        // Listeners
-        document.getElementById('search-input').addEventListener('input', renderProducts);
-        
-        // Initial setup
-        window.onload = renderProducts;
-
-        <div class="payment-modal-overlay" id="payment-modal" style="display: none;">
-        <div class="payment-modal">
-            <div class="cart-header">
-                <h3>Complete Your Payment</h3>
-                <button class="close-btn" onclick="closePaymentPortal()">✕</button>
-            </div>
-            <div class="payment-body">
-                <p>Scan the QR code with any UPI app (GPay, PhonePe, Paytm) to pay the exact amount:</p>
-                <div class="qr-container">
-                    <img id="upi-qr-image" src="" alt="UPI Payment QR Code">
-                </div>
-                <div class="upi-details">
-                    <p><strong>Amount Payable:</strong> ₹<span id="pay-amount">0</span></p>
-                    <p><strong>UPI ID:</strong> <span id="merchant-upi-text">merchant@upi</span></p>
-                </div>
-                <hr style="border: 0; border-top: 1px solid #eee; margin: 15px 0;">
-                <label style="font-size: 14px; font-weight: bold; display: block; margin-bottom: 5px; text-align: left;">Step 2: Enter Transaction ID / UTR Number</label>
-                <input type="text" id="utr-number" placeholder="Enter 12-digit UTR / Ref Number" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; margin-bottom: 15px; box-sizing: border-box; font-size: 14px;">
-                <button class="whatsapp-btn" onclick="checkoutWhatsApp()">Verify & Send Order via WhatsApp</button>
-            </div>
-        </div>
-    </div>
     </script>
 </body>
 </html>
