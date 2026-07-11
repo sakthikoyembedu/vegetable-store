@@ -38,11 +38,34 @@
             <button class="close-btn" onclick="toggleCart()">✕</button>
         </div>
         <div class="cart-items" id="cart-items-container"></div>
-    <div class="cart-footer">
+        <div class="cart-footer">
             <label style="font-size: 14px; font-weight: bold; display: block; margin-bottom: 5px;">Delivery Address:</label>
             <textarea id="delivery-address" rows="3" placeholder="Enter your full address, landmark, and pincode..." style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; margin-bottom: 15px; font-family: inherit; box-sizing: border-box;"></textarea>
             <div class="total-price">Total: ₹<span id="cart-total">0</span></div>
             <button class="whatsapp-btn" onclick="openPaymentPortal()">Proceed to Payment</button>
+        </div>
+    </div>
+
+    <div class="payment-modal-overlay" id="payment-modal" style="display: none;">
+        <div class="payment-modal">
+            <div class="cart-header">
+                <h3>Complete Your Payment</h3>
+                <button class="close-btn" onclick="closePaymentPortal()">✕</button>
+            </div>
+            <div class="payment-body">
+                <p>Scan the QR code with any UPI app (GPay, PhonePe, Paytm) to pay the exact amount:</p>
+                <div class="qr-container">
+                    <img id="upi-qr-image" src="" alt="UPI Payment QR Code">
+                </div>
+                <div class="upi-details">
+                    <p><strong>Amount Payable:</strong> ₹<span id="pay-amount">0</span></p>
+                    <p><strong>UPI ID:</strong> <span id="merchant-upi-text">merchant@upi</span></p>
+                </div>
+                <hr style="border: 0; border-top: 1px solid #eee; margin: 15px 0;">
+                <label style="font-size: 14px; font-weight: bold; display: block; margin-bottom: 5px; text-align: left;">Step 2: Enter Transaction ID / UTR Number</label>
+                <input type="text" id="utr-number" placeholder="Enter 12-digit UTR / Ref Number" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; margin-bottom: 15px; box-sizing: border-box; font-size: 14px;">
+                <button class="whatsapp-btn" onclick="checkoutWhatsApp()">Verify & Send Order via WhatsApp</button>
+            </div>
         </div>
     </div>
 
@@ -192,18 +215,17 @@
             renderProducts();
         }
 
-      // WhatsApp Checkout Engine
-    // Open Payment Portal & Generate Dynamic UPI QR
+        // Open Payment Portal & Generate Dynamic UPI QR
         function openPaymentPortal() {
             if (Object.keys(cart).length === 0) {
                 alert("Your cart is empty!");
                 return;
             }
 
-            const address = document.getElementById('delivery-address').value.trim();
-            if (!address) {
+            const addressInput = document.getElementById('delivery-address');
+            if (!addressInput || !addressInput.value.trim()) {
                 alert("Please enter your complete delivery address before proceeding!");
-                document.getElementById('delivery-address').focus();
+                if (addressInput) addressInput.focus();
                 return;
             }
 
@@ -216,7 +238,7 @@
 
             // 1. SET YOUR MERCHANDISE DETAILS HERE
             const merchantUPI = "sakthindex-6@oksbi"; // Replace with your actual GPay / PhonePe UPI ID
-            const merchantName = "Fresh Sivavinayk Grocer";   // Replace with your store name
+            const merchantName = "Fresh Grocer";   // Replace with your store name
 
             // Generate UPI Payment Link & QR Code automatically
             const upiLink = `upi://pay?pa=${merchantUPI}&pn=${encodeURIComponent(merchantName)}&am=${total}&cu=INR`;
@@ -279,6 +301,12 @@
             updateCartUI();
             toggleCart();
         }
+
+        // Listeners
+        document.getElementById('search-input').addEventListener('input', renderProducts);
+        
+        // Initial setup
+        window.onload = renderProducts;
     </script>
 </body>
 </html>
