@@ -38,11 +38,11 @@
             <button class="close-btn" onclick="toggleCart()">✕</button>
         </div>
         <div class="cart-items" id="cart-items-container"></div>
-      <div class="cart-footer">
+    <div class="cart-footer">
             <label style="font-size: 14px; font-weight: bold; display: block; margin-bottom: 5px;">Delivery Address:</label>
             <textarea id="delivery-address" rows="3" placeholder="Enter your full address, landmark, and pincode..." style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; margin-bottom: 15px; font-family: inherit; box-sizing: border-box;"></textarea>
             <div class="total-price">Total: ₹<span id="cart-total">0</span></div>
-            <button class="whatsapp-btn" onclick="checkoutWhatsApp()">Order via WhatsApp</button>
+            <button class="whatsapp-btn" onclick="openPaymentPortal()">Proceed to Payment</button>
         </div>
     </div>
 
@@ -236,6 +236,29 @@
         
         // Initial setup
         window.onload = renderProducts;
+
+        <div class="payment-modal-overlay" id="payment-modal" style="display: none;">
+        <div class="payment-modal">
+            <div class="cart-header">
+                <h3>Complete Your Payment</h3>
+                <button class="close-btn" onclick="closePaymentPortal()">✕</button>
+            </div>
+            <div class="payment-body">
+                <p>Scan the QR code with any UPI app (GPay, PhonePe, Paytm) to pay the exact amount:</p>
+                <div class="qr-container">
+                    <img id="upi-qr-image" src="" alt="UPI Payment QR Code">
+                </div>
+                <div class="upi-details">
+                    <p><strong>Amount Payable:</strong> ₹<span id="pay-amount">0</span></p>
+                    <p><strong>UPI ID:</strong> <span id="merchant-upi-text">merchant@upi</span></p>
+                </div>
+                <hr style="border: 0; border-top: 1px solid #eee; margin: 15px 0;">
+                <label style="font-size: 14px; font-weight: bold; display: block; margin-bottom: 5px; text-align: left;">Step 2: Enter Transaction ID / UTR Number</label>
+                <input type="text" id="utr-number" placeholder="Enter 12-digit UTR / Ref Number" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; margin-bottom: 15px; box-sizing: border-box; font-size: 14px;">
+                <button class="whatsapp-btn" onclick="checkoutWhatsApp()">Verify & Send Order via WhatsApp</button>
+            </div>
+        </div>
+    </div>
     </script>
 </body>
 </html>
