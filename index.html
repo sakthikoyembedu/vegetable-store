@@ -41,9 +41,7 @@
             box-shadow: 0 2px 8px rgba(0,0,0,0.15);
         }
 
-        header h1 {
-            font-size: 1.5rem;
-        }
+        header h1 { font-size: 1.5rem; }
 
         .cart-btn {
             background-color: #ffffff;
@@ -88,9 +86,7 @@
             flex-direction: column;
         }
 
-        .product-card:hover {
-            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
-        }
+        .product-card:hover { box-shadow: 0 8px 16px rgba(0,0,0,0.1); }
 
         .product-image {
             width: 100%;
@@ -107,18 +103,8 @@
             justify-content: space-between;
         }
 
-        .product-title {
-            font-size: 1.1rem;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-        }
-
-        .product-price {
-            color: var(--primary-color);
-            font-size: 1.2rem;
-            font-weight: bold;
-            margin-bottom: 1rem;
-        }
+        .product-title { font-size: 1.1rem; font-weight: 600; margin-bottom: 0.5rem; }
+        .product-price { color: var(--primary-color); font-size: 1.2rem; font-weight: bold; margin-bottom: 1rem; }
 
         .add-to-cart {
             background-color: var(--primary-color);
@@ -132,17 +118,12 @@
             width: 100%;
         }
 
-        .add-to-cart:hover {
-            background-color: var(--primary-hover);
-        }
+        .add-to-cart:hover { background-color: var(--primary-hover); }
 
         /* Cart Drawer / Modal Overlay */
         .modal-overlay {
             position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
+            top: 0; left: 0; right: 0; bottom: 0;
             background-color: rgba(0, 0, 0, 0.5);
             display: none;
             justify-content: center;
@@ -171,13 +152,7 @@
             margin-bottom: 1rem;
         }
 
-        .close-btn {
-            background: none;
-            border: none;
-            font-size: 1.5rem;
-            cursor: pointer;
-            color: #888;
-        }
+        .close-btn { background: none; border: none; font-size: 1.5rem; cursor: pointer; color: #888; }
 
         .cart-item {
             display: flex;
@@ -187,17 +162,12 @@
             border-bottom: 1px solid #f0f0f0;
         }
 
-        .cart-item-controls {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
+        .cart-item-controls { display: flex; align-items: center; gap: 0.5rem; }
 
         .qty-btn {
             background-color: #eee;
             border: none;
-            width: 28px;
-            height: 28px;
+            width: 28px; height: 28px;
             border-radius: 50%;
             cursor: pointer;
             font-weight: bold;
@@ -212,17 +182,8 @@
         }
 
         /* Form Inputs */
-        .form-group {
-            margin-bottom: 1rem;
-        }
-
-        .form-group label {
-            display: block;
-            font-size: 0.9rem;
-            font-weight: 600;
-            margin-bottom: 0.4rem;
-        }
-
+        .form-group { margin-bottom: 1rem; }
+        .form-group label { display: block; font-size: 0.9rem; font-weight: 600; margin-bottom: 0.4rem; }
         .form-control {
             width: 100%;
             padding: 0.75rem;
@@ -231,7 +192,51 @@
             font-size: 1rem;
         }
 
-        /* Payment Section */
+        /* UPI App Selection Buttons */
+        .upi-app-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 10px;
+            margin-bottom: 15px;
+        }
+
+        .app-btn {
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-weight: bold;
+            font-size: 0.95rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: opacity 0.2s, transform 0.1s;
+        }
+
+        .app-btn:hover { opacity: 0.9; }
+        .app-btn:active { transform: scale(0.98); }
+
+        .btn-gpay { background-color: #202124; }
+        .btn-phonepe { background-color: #5f259f; }
+        .btn-paytm { background-color: #00b9f1; }
+        .btn-any { background-color: #00897b; }
+
+        /* Payment Status Animation Box */
+        .payment-status-box {
+            display: none;
+            background-color: #fff3e0;
+            border: 1px solid #ffe0b2;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            text-align: center;
+            font-size: 0.9rem;
+            color: #e65100;
+        }
+
         .payment-section {
             background-color: #f9fdf9;
             border: 1px dashed var(--primary-color);
@@ -242,26 +247,13 @@
         }
 
         .qr-code-img {
-            width: 180px;
-            height: 180px;
-            margin: 1rem auto;
+            width: 160px; height: 160px;
+            margin: 0.5rem auto;
             display: block;
             border: 1px solid #ddd;
             border-radius: 8px;
-            padding: 8px;
+            padding: 6px;
             background: white;
-        }
-
-        .upi-id-badge {
-            background-color: #e8f5e9;
-            color: var(--primary-color);
-            padding: 0.4rem 0.8rem;
-            border-radius: 6px;
-            font-family: monospace;
-            font-size: 1rem;
-            font-weight: bold;
-            display: inline-block;
-            margin-top: 0.5rem;
         }
 
         .whatsapp-btn {
@@ -281,9 +273,7 @@
             transition: background-color 0.2s;
         }
 
-        .whatsapp-btn:hover {
-            background-color: #1ebd5b;
-        }
+        .whatsapp-btn:hover { background-color: #1ebd5b; }
 
         @media (max-width: 600px) {
             header { padding: 1rem; }
@@ -303,10 +293,10 @@
     </header>
 
     <main class="container">
-        <div class="product-grid" id="catalog">
-            </div>
+        <div class="product-grid" id="catalog"></div>
     </main>
 
+    <!-- Shopping Cart & Payment Modal -->
     <div class="modal-overlay" id="cart-modal">
         <div class="modal">
             <div class="modal-header">
@@ -314,8 +304,7 @@
                 <button class="close-btn" onclick="closeCart()">&times;</button>
             </div>
 
-            <div id="cart-items-list">
-                </div>
+            <div id="cart-items-list"></div>
 
             <div class="cart-total">
                 Total Payable: ₹<span id="cart-total-amount">0</span>
@@ -329,25 +318,44 @@
 
                 <div class="form-group">
                     <label for="customer-address">Delivery Address *</label>
-                    <textarea id="customer-address" class="form-control" rows="3" placeholder="Street address, flat no., landmark" required></textarea>
+                    <textarea id="customer-address" class="form-control" rows="2" placeholder="Street address, flat no., landmark" required></textarea>
                 </div>
 
+                <!-- UPI App Selection -->
                 <div class="payment-section">
-                    <h3 style="color: var(--primary-color); font-size: 1.1rem;">Scan & Pay via Any UPI App</h3>
-                    <p style="font-size: 0.85rem; color: #666; margin-top: 4px;">GPay, PhonePe, Paytm, BHIM</p>
-                    
+                    <h3 style="color: var(--primary-color); font-size: 1.05rem; margin-bottom: 5px;">Step 1: Tap to Pay with your App</h3>
+                    <p style="font-size: 0.8rem; color: #666;">Choose your installed app to pay directly:</p>
+
+                    <div class="upi-app-grid">
+                        <button type="button" class="app-btn btn-gpay" onclick="payWithApp('Google Pay', 'gpay')">
+                            GPay
+                        </button>
+                        <button type="button" class="app-btn btn-phonepe" onclick="payWithApp('PhonePe', 'phonepe')">
+                            PhonePe
+                        </button>
+                        <button type="button" class="app-btn btn-paytm" onclick="payWithApp('Paytm', 'paytm')">
+                            Paytm
+                        </button>
+                        <button type="button" class="app-btn btn-any" onclick="payWithApp('UPI App', 'any')">
+                            Any UPI App
+                        </button>
+                    </div>
+
+                    <!-- Status Notification Box -->
+                    <div id="payment-status-box" class="payment-status-box">
+                        <span id="payment-status-text">Waiting for payment...</span>
+                    </div>
+
+                    <div style="font-size: 0.85rem; color: #777; margin: 10px 0 5px;">Or scan QR code from any another phone:</div>
                     <img id="upi-qr" class="qr-code-img" src="" alt="UPI QR Code">
-                    
-                    <div style="font-size: 0.9rem;">Or pay manually to UPI ID:</div>
-                    <div class="upi-id-badge">sakthindex-6@oksbi</div>
                 </div>
 
                 <div class="form-group">
-                    <label for="utr-number">12-Digit UPI Transaction ID / UTR *</label>
-                    <input type="text" id="utr-number" class="form-control" placeholder="e.g., 312456789012" maxlength="12" required>
+                    <label for="utr-number">Step 2: UTR / Reference No (Optional if Paid via App)</label>
+                    <input type="text" id="utr-number" class="form-control" placeholder="Paste 12-digit UTR if paying manually" maxlength="12">
                 </div>
 
-                <button class="whatsapp-btn" onclick="submitOrder()">
+                <button class="whatsapp-btn" onclick="submitOrder('Manual Confirmation')">
                     💬 Confirm Order via WhatsApp
                 </button>
             </div>
@@ -360,7 +368,7 @@
         const MERCHANT_NAME = "My Store";
         const WHATSAPP_NUMBER = "918838090005"; // Formatted with country code 91
 
-        // SAMPLE PRODUCT CATALOG (Easily add or modify items here)
+        // SAMPLE PRODUCT CATALOG
         const products = [
             { id: 1, name: "Fresh Farm Tomatoes", price: 40, unit: "1 kg", image: "https://images.unsplash.com/photo-1592924357228-91a4daadcfea?w=400&auto=format&fit=crop&q=60" },
             { id: 2, name: "Organic Potatoes", price: 35, unit: "1 kg", image: "https://images.unsplash.com/photo-1518977676601-b53f82aba655?w=400&auto=format&fit=crop&q=60" },
@@ -371,8 +379,10 @@
         ];
 
         let cart = {};
+        let paymentAppClicked = false;
+        let selectedApp = "";
 
-        // Render Catalog on Load
+        // Render Catalog
         function renderCatalog() {
             const catalog = document.getElementById("catalog");
             catalog.innerHTML = products.map(p => `
@@ -390,7 +400,7 @@
             `).join("");
         }
 
-        // Cart Management
+        // Cart Actions
         function addToCart(id) {
             cart[id] = (cart[id] || 0) + 1;
             updateCartUI();
@@ -426,9 +436,9 @@
 
             renderCartItems();
             
-            // Generate Dynamic UPI QR Code for exact cart total
+            // Generate QR Code Fallback
             const upiLink = `upi://pay?pa=${MERCHANT_UPI}&pn=${encodeURIComponent(MERCHANT_NAME)}&am=${total}&cu=INR`;
-            const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(upiLink)}`;
+            const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(upiLink)}`;
             document.getElementById("upi-qr").src = qrUrl;
 
             document.getElementById("cart-modal").style.display = "flex";
@@ -436,6 +446,8 @@
 
         function closeCart() {
             document.getElementById("cart-modal").style.display = "none";
+            paymentAppClicked = false;
+            document.getElementById("payment-status-box").style.display = "none";
         }
 
         function renderCartItems() {
@@ -468,30 +480,93 @@
             }).join("");
         }
 
+        // Direct App Launch Engine
+        function payWithApp(appName, scheme) {
+            const name = document.getElementById("customer-name").value.trim();
+            const address = document.getElementById("customer-address").value.trim();
+            
+            if (!name || !address) {
+                alert("Please enter your Full Name and Delivery Address before clicking to pay!");
+                if (!name) document.getElementById("customer-name").focus();
+                else document.getElementById("customer-address").focus();
+                return;
+            }
+
+            const total = calculateTotal();
+            const params = `pa=${MERCHANT_UPI}&pn=${encodeURIComponent(MERCHANT_NAME)}&am=${total}&cu=INR`;
+            
+            let deepLink = `upi://pay?${params}`;
+            if (scheme === 'gpay') deepLink = `gpay://upi/pay?${params}`;
+            if (scheme === 'phonepe') deepLink = `phonepe://pay?${params}`;
+            if (scheme === 'paytm') deepLink = `paytmmp://pay?${params}`;
+
+            selectedApp = appName;
+            paymentAppClicked = true;
+
+            // Show instruction while app is open
+            const statusBox = document.getElementById("payment-status-box");
+            statusBox.style.display = "block";
+            statusBox.style.backgroundColor = "#fff3e0";
+            statusBox.style.borderColor = "#ffe0b2";
+            statusBox.style.color = "#e65100";
+            document.getElementById("payment-status-text").innerHTML = 
+                `⌛ Opening <b>${appName}</b>...<br>Complete the ₹${total} payment, then <b>switch back to this browser tab</b> to auto-send your order!`;
+
+            // Trigger app switch
+            window.location.href = deepLink;
+        }
+
+        // Automatic Return Tracker & WhatsApp Dispatcher
+        document.addEventListener("visibilitychange", () => {
+            // When user switches back from GPay/PhonePe to the browser tab
+            if (document.visibilityState === "visible" && paymentAppClicked) {
+                paymentAppClicked = false; // Prevent double triggers
+                
+                const statusBox = document.getElementById("payment-status-box");
+                statusBox.style.backgroundColor = "#e8f5e9";
+                statusBox.style.borderColor = "#a5d6a7";
+                statusBox.style.color = "#1b5e20";
+                
+                let seconds = 3;
+                const countdown = setInterval(() => {
+                    document.getElementById("payment-status-text").innerHTML = 
+                        `✅ Welcome back! Auto-sending order to WhatsApp in <b>${seconds}</b> seconds...<br><small>(If blocked by browser, click Confirm Order below)</small>`;
+                    seconds--;
+                    
+                    if (seconds < 0) {
+                        clearInterval(countdown);
+                        submitOrder(`Paid via ${selectedApp} (Auto-Sent)`);
+                    }
+                }, 1000);
+            }
+        });
+
         // WhatsApp Order Submission
-        function submitOrder() {
+        function submitOrder(paymentMethodText = "Manual Confirmation") {
             const name = document.getElementById("customer-name").value.trim();
             const address = document.getElementById("customer-address").value.trim();
             const utr = document.getElementById("utr-number").value.trim();
             const total = calculateTotal();
 
-            if (!name || !address || !utr) {
-                alert("Please fill in your Name, Delivery Address, and the 12-digit UPI UTR number to proceed.");
+            if (!name || !address) {
+                alert("Please fill in your Name and Delivery Address.");
                 return;
             }
 
-            if (utr.length < 8) {
-                alert("Please enter a valid Transaction ID / UTR number from your UPI app.");
+            // If paying manually and didn't use an app button, enforce UTR
+            if (paymentMethodText === "Manual Confirmation" && utr.length < 8) {
+                alert("Please enter a valid 12-digit UTR Transaction ID if you paid manually via QR code.");
+                document.getElementById("utr-number").focus();
                 return;
             }
 
-            // Construct WhatsApp Message
             let message = `*NEW PAID ORDER - ${MERCHANT_NAME}*\n\n`;
             message += `*Customer:* ${name}\n`;
             message += `*Address:* ${address}\n`;
             message += `*Payment Status:* PAID ✅\n`;
-            message += `*UPI UTR / Ref No:* ${utr}\n\n`;
-            message += `*Order Summary:*\n`;
+            message += `*Method:* ${paymentMethodText}\n`;
+            if (utr) message += `*UPI UTR / Ref No:* ${utr}\n`;
+            message += `\n*Order Summary:*\n`;
 
             Object.entries(cart).forEach(([id, qty], index) => {
                 const p = products.find(item => item.id == id);
@@ -499,15 +574,14 @@
             });
 
             message += `\n*Grand Total Paid:* ₹${total}\n\n`;
-            message += `_Please verify payment UTR and confirm dispatch!_`;
+            message += `_Please confirm my payment and let me know when it will be dispatched!_`;
 
-            // Open WhatsApp
             const encodedMessage = encodeURIComponent(message);
             const whatsappUrl = `https://api.whatsapp.com/send?phone=${WHATSAPP_NUMBER}&text=${encodedMessage}`;
             
             window.open(whatsappUrl, "_blank");
 
-            // Optional: Clear cart after successful order redirect
+            // Reset
             cart = {};
             updateCartUI();
             closeCart();
