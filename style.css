@@ -223,3 +223,62 @@ th { background-color: var(--secondary-color); }
 
 .edit-btn { background: #0288d1; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; margin-right: 5px;}
 .delete-btn { background: var(--accent-red); color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; }
+
+/* Payment Portal Modal Styling */
+.payment-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 300;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 15px;
+    box-sizing: border-box;
+}
+
+.payment-modal {
+    background: white;
+    width: 100%;
+    max-width: 420px;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    text-align: center;
+}
+
+.payment-body {
+    padding: 20px;
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+.qr-container {
+    background: #f9f9f9;
+    padding: 15px;
+    border: 2px dashed #2e7d32;
+    border-radius: 8px;
+    display: inline-block;
+    margin: 10px 0;
+}
+
+.qr-container img {
+    width: 180px;
+    height: 180px;
+    display: block;
+}
+
+.upi-details {
+    background: #f1f8e9;
+    padding: 10px;
+    border-radius: 6px;
+    margin-top: 10px;
+    font-size: 15px;
+}
+
+.upi-details p {
+    margin: 5px 0;
+}
