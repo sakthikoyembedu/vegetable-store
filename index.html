@@ -3,310 +3,518 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fresh Grocer | Online Vegetable Store</title>
-    <link rel="stylesheet" href="style.css">
+    <title>My Store | Online Ordering</title>
+    <style>
+        :root {
+            --primary-color: #2e7d32;
+            --primary-hover: #1b5e20;
+            --background-color: #f4f6f8;
+            --card-bg: #ffffff;
+            --text-color: #333333;
+            --border-color: #e0e0e0;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--background-color);
+            color: var(--text-color);
+            padding-bottom: 80px;
+        }
+
+        /* Navigation & Header */
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        }
+
+        header h1 {
+            font-size: 1.5rem;
+        }
+
+        .cart-btn {
+            background-color: #ffffff;
+            color: var(--primary-color);
+            border: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .cart-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        /* Product Grid */
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .product-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            transition: box-shadow 0.3s;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .product-card:hover {
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            background-color: #eee;
+        }
+
+        .product-details {
+            padding: 1rem;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .product-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .product-price {
+            color: var(--primary-color);
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+
+        .add-to-cart {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0.7rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            width: 100%;
+        }
+
+        .add-to-cart:hover {
+            background-color: var(--primary-hover);
+        }
+
+        /* Cart Drawer / Modal Overlay */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            padding: 1rem;
+        }
+
+        .modal {
+            background-color: white;
+            border-radius: 16px;
+            width: 100%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 1.5rem;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #888;
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .cart-item-controls {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .qty-btn {
+            background-color: #eee;
+            border: none;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .cart-total {
+            font-size: 1.25rem;
+            font-weight: bold;
+            text-align: right;
+            margin: 1.5rem 0;
+            color: var(--primary-color);
+        }
+
+        /* Form Inputs */
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 0.4rem;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+
+        /* Payment Section */
+        .payment-section {
+            background-color: #f9fdf9;
+            border: 1px dashed var(--primary-color);
+            border-radius: 12px;
+            padding: 1.25rem;
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .qr-code-img {
+            width: 180px;
+            height: 180px;
+            margin: 1rem auto;
+            display: block;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 8px;
+            background: white;
+        }
+
+        .upi-id-badge {
+            background-color: #e8f5e9;
+            color: var(--primary-color);
+            padding: 0.4rem 0.8rem;
+            border-radius: 6px;
+            font-family: monospace;
+            font-size: 1rem;
+            font-weight: bold;
+            display: inline-block;
+            margin-top: 0.5rem;
+        }
+
+        .whatsapp-btn {
+            background-color: #25D366;
+            color: white;
+            border: none;
+            width: 100%;
+            padding: 1rem;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0.5rem;
+            transition: background-color 0.2s;
+        }
+
+        .whatsapp-btn:hover {
+            background-color: #1ebd5b;
+        }
+
+        @media (max-width: 600px) {
+            header { padding: 1rem; }
+            .product-grid { grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+            .product-image { height: 140px; }
+            .product-title { font-size: 0.95rem; }
+        }
+    </style>
 </head>
 <body>
+
     <header>
-        <div class="header-container">
-            <h1>Fresh Grocer</h1>
-            <div class="search-bar">
-                <input type="text" id="search-input" placeholder="Search vegetables...">
-            </div>
-            <div class="cart-icon" onclick="toggleCart()">
-                🛒 Cart (<span id="cart-count">0</span>)
-            </div>
-        </div>
+        <h1>My Store</h1>
+        <button class="cart-btn" onclick="openCart()">
+            🛒 Cart (<span id="cart-count">0</span>)
+        </button>
     </header>
 
-    <div class="container">
-        <div class="categories" id="category-tags">
-            <button class="active" onclick="filterCategory('all')">All</button>
-            <button onclick="filterCategory('Greens')">Greens</button>
-            <button onclick="filterCategory('Root')">Root Vegetables</button>
-            <button onclick="filterCategory('Gourd')">Gourds</button>
-            <button onclick="filterCategory('Nightshade')">Nightshades</button>
-            <button onclick="filterCategory('Herbs')">Herbs & Spices</button>
-        </div>
-
-        <main class="product-grid" id="product-container"></main>
-    </div>
-
-    <div class="cart-drawer" id="cart-drawer">
-        <div class="cart-header">
-            <h3>Your Shopping Cart</h3>
-            <button class="close-btn" onclick="toggleCart()">✕</button>
-        </div>
-        <div class="cart-items" id="cart-items-container"></div>
-        <div class="cart-footer">
-            <label style="font-size: 14px; font-weight: bold; display: block; margin-bottom: 5px;">Delivery Address:</label>
-            <textarea id="delivery-address" rows="3" placeholder="Enter your full address, landmark, and pincode..." style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; margin-bottom: 15px; font-family: inherit; box-sizing: border-box;"></textarea>
-            <div class="total-price">Total: ₹<span id="cart-total">0</span></div>
-            <button class="whatsapp-btn" onclick="openPaymentPortal()">Proceed to Payment</button>
-        </div>
-    </div>
-
-    <div class="payment-modal-overlay" id="payment-modal" style="display: none;">
-        <div class="payment-modal">
-            <div class="cart-header">
-                <h3>Complete Your Payment</h3>
-                <button class="close-btn" onclick="closePaymentPortal()">✕</button>
+    <main class="container">
+        <div class="product-grid" id="catalog">
             </div>
-            <div class="payment-body">
-                <p>Scan the QR code with any UPI app (GPay, PhonePe, Paytm) to pay the exact amount:</p>
-                <div class="qr-container">
-                    <img id="upi-qr-image" src="" alt="UPI Payment QR Code">
+    </main>
+
+    <div class="modal-overlay" id="cart-modal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2>Your Shopping Cart</h2>
+                <button class="close-btn" onclick="closeCart()">&times;</button>
+            </div>
+
+            <div id="cart-items-list">
                 </div>
-                <div class="upi-details">
-                    <p><strong>Amount Payable:</strong> ₹<span id="pay-amount">0</span></p>
-                    <p><strong>UPI ID:</strong> <span id="merchant-upi-text">merchant@upi</span></p>
+
+            <div class="cart-total">
+                Total Payable: ₹<span id="cart-total-amount">0</span>
+            </div>
+
+            <div id="checkout-form">
+                <div class="form-group">
+                    <label for="customer-name">Full Name *</label>
+                    <input type="text" id="customer-name" class="form-control" placeholder="Enter your name" required>
                 </div>
-                <hr style="border: 0; border-top: 1px solid #eee; margin: 15px 0;">
-                <label style="font-size: 14px; font-weight: bold; display: block; margin-bottom: 5px; text-align: left;">Step 2: Enter Transaction ID / UTR Number</label>
-                <input type="text" id="utr-number" placeholder="Enter 12-digit UTR / Ref Number" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; margin-bottom: 15px; box-sizing: border-box; font-size: 14px;">
-                <button class="whatsapp-btn" onclick="checkoutWhatsApp()">Verify & Send Order via WhatsApp</button>
+
+                <div class="form-group">
+                    <label for="customer-address">Delivery Address *</label>
+                    <textarea id="customer-address" class="form-control" rows="3" placeholder="Street address, flat no., landmark" required></textarea>
+                </div>
+
+                <div class="payment-section">
+                    <h3 style="color: var(--primary-color); font-size: 1.1rem;">Scan & Pay via Any UPI App</h3>
+                    <p style="font-size: 0.85rem; color: #666; margin-top: 4px;">GPay, PhonePe, Paytm, BHIM</p>
+                    
+                    <img id="upi-qr" class="qr-code-img" src="" alt="UPI QR Code">
+                    
+                    <div style="font-size: 0.9rem;">Or pay manually to UPI ID:</div>
+                    <div class="upi-id-badge">sakthindex-6@oksbi</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="utr-number">12-Digit UPI Transaction ID / UTR *</label>
+                    <input type="text" id="utr-number" class="form-control" placeholder="e.g., 312456789012" maxlength="12" required>
+                </div>
+
+                <button class="whatsapp-btn" onclick="submitOrder()">
+                    💬 Confirm Order via WhatsApp
+                </button>
             </div>
         </div>
     </div>
 
     <script>
-        // Default Master Data of 50+ Vegetables
-        const defaultVegetables = [
-            { id: 1, name: "Tomato", price: 40, unit: "kg", category: "Nightshade", image: "https://images.unsplash.com/photo-1595855759920-86582396756a?w=150" },
-            { id: 2, name: "Potato", price: 30, unit: "kg", category: "Root", image: "https://images.unsplash.com/photo-1518977676601-b53f82aba655?w=150" },
-            { id: 3, name: "Onion", price: 35, unit: "kg", category: "Root", image: "https://images.unsplash.com/photo-1508747702-f520ea25d797?w=150" },
-            { id: 4, name: "Spinach (Palak)", price: 20, unit: "bunch", category: "Greens", image: "https://images.unsplash.com/photo-1576045057995-568f588f82fb?w=150" },
-            { id: 5, name: "Carrot", price: 60, unit: "kg", category: "Root", image: "https://images.unsplash.com/photo-1598170845058-32b9d6a5da37?w=150" },
-            { id: 6, name: "Cauliflower", price: 45, unit: "piece", category: "Nightshade", image: "https://images.unsplash.com/photo-1568584711299-a2de1103f6f8?w=150" },
-            { id: 7, name: "Cabbage", price: 30, unit: "piece", category: "Nightshade", image: "https://images.unsplash.com/photo-1606233405788-b2cae7ad96e6?w=150" },
-            { id: 8, name: "Green Chilli", price: 80, unit: "kg", category: "Herbs", image: "https://images.unsplash.com/photo-1588252303782-cb80119cb665?w=150" },
-            { id: 9, name: "Ginger", price: 120, unit: "kg", category: "Herbs", image: "https://images.unsplash.com/photo-1599940824399-b87987ceb72a?w=150" },
-            { id: 10, name: "Garlic", price: 150, unit: "kg", category: "Herbs", image: "https://images.unsplash.com/photo-1540148426945-6cf22a6b2383?w=150" },
-            { id: 11, name: "Coriander Leaves", price: 15, unit: "bunch", category: "Greens", image: "https://images.unsplash.com/photo-1614777986387-015c2a89b6f6?w=150" },
-            { id: 12, name: "Mint Leaves", price: 15, unit: "bunch", category: "Greens", image: "https://images.unsplash.com/photo-1536761180805-728bdfec1d60?w=150" },
-            { id: 13, name: "Ladies Finger (Okra)", price: 40, unit: "kg", category: "Nightshade", image: "https://images.unsplash.com/photo-1627844642677-8b30cb8fac9c?w=150" },
-            { id: 14, name: "Brinjal (Eggplant)", price: 50, unit: "kg", category: "Nightshade", image: "https://images.unsplash.com/photo-1601407769975-d143c39832aa?w=150" },
-            { id: 15, name: "Bitter Gourd", price: 45, unit: "kg", category: "Gourd", image: "https://images.unsplash.com/photo-1567670678854-325db7908c31?w=150" },
-            { id: 16, name: "Bottle Gourd", price: 30, unit: "piece", category: "Gourd", image: "https://images.unsplash.com/photo-1626200419199-391ae4be7a40?w=150" },
-            { id: 17, name: "Ridge Gourd", price: 40, unit: "kg", category: "Gourd", image: "https://images.unsplash.com/photo-1601004890684-d8cbf643f5f2?w=150" },
-            { id: 18, name: "Snake Gourd", price: 35, unit: "kg", category: "Gourd", image: "https://images.unsplash.com/photo-1601004890684-d8cbf643f5f2?w=150" },
-            { id: 19, name: "Cucumber", price: 40, unit: "kg", category: "Gourd", image: "https://images.unsplash.com/photo-1604972688049-63ffb9d19a2e?w=150" },
-            { id: 20, name: "Capsicum (Green)", price: 70, unit: "kg", category: "Nightshade", image: "https://images.unsplash.com/photo-1563565086-f61b3d1ef0e5?w=150" },
-            { id: 21, name: "Capsicum (Red)", price: 140, unit: "kg", category: "Nightshade", image: "https://images.unsplash.com/photo-1563565086-f61b3d1ef0e5?w=150" },
-            { id: 22, name: "Capsicum (Yellow)", price: 140, unit: "kg", category: "Nightshade", image: "https://images.unsplash.com/photo-1563565086-f61b3d1ef0e5?w=150" },
-            { id: 23, name: "Green Peas", price: 90, unit: "kg", category: "Root", image: "https://images.unsplash.com/photo-1592394533824-9440e5d68530?w=150" },
-            { id: 24, name: "French Beans", price: 60, unit: "kg", category: "Greens", image: "https://images.unsplash.com/photo-1567375639352-eb4dc0a6e703?w=150" },
-            { id: 25, name: "Cluster Beans", price: 45, unit: "kg", category: "Greens", image: "https://images.unsplash.com/photo-1567375639352-eb4dc0a6e703?w=150" },
-            { id: 26, name: "Radish (White)", price: 40, unit: "kg", category: "Root", image: "https://images.unsplash.com/photo-1587486913049-53fc88980cfc?w=150" },
-            { id: 27, name: "Beetroot", price: 50, unit: "kg", category: "Root", image: "https://images.unsplash.com/photo-1587486913049-53fc88980cfc?w=150" },
-            { id: 28, name: "Sweet Potato", price: 45, unit: "kg", category: "Root", image: "https://images.unsplash.com/photo-1595855759920-86582396756a?w=150" },
-            { id: 29, name: "Drumstick", price: 80, unit: "kg", category: "Gourd", image: "https://images.unsplash.com/photo-1601004890684-d8cbf643f5f2?w=150" },
-            { id: 30, name: "Lemon", price: 5, unit: "piece", category: "Herbs", image: "https://images.unsplash.com/photo-1590502593747-42a996133562?w=150" },
-            { id: 31, name: "Curry Leaves", price: 10, unit: "bunch", category: "Greens", image: "https://images.unsplash.com/photo-1614777986387-015c2a89b6f6?w=150" },
-            { id: 32, name: "Pumpkin", price: 30, unit: "kg", category: "Gourd", image: "https://images.unsplash.com/photo-1506815444479-bfdb1e96c566?w=150" },
-            { id: 33, name: "Raw Banana", price: 10, unit: "piece", category: "Root", image: "https://images.unsplash.com/photo-1566393028639-d108a42c46a7?w=150" },
-            { id: 34, name: "Elephant Yam", price: 60, unit: "kg", category: "Root", image: "https://images.unsplash.com/photo-1518977676601-b53f82aba655?w=150" },
-            { id: 35, name: "Colocasia (Arbi)", price: 50, unit: "kg", category: "Root", image: "https://images.unsplash.com/photo-1518977676601-b53f82aba655?w=150" },
-            { id: 36, name: "Mushroom (Button)", price: 50, unit: "pack", category: "Nightshade", image: "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?w=150" },
-            { id: 37, name: "Sweet Corn", price: 25, unit: "piece", category: "Root", image: "https://images.unsplash.com/photo-1551754655-cd27e38d2076?w=150" },
-            { id: 38, name: "Baby Corn", price: 40, unit: "pack", category: "Root", image: "https://images.unsplash.com/photo-1551754655-cd27e38d2076?w=150" },
-            { id: 39, name: "Broccoli", price: 90, unit: "piece", category: "Nightshade", image: "https://images.unsplash.com/photo-1584270354949-c26b0d5b4a0c?w=150" },
-            { id: 40, name: "Spring Onion", price: 30, unit: "bunch", category: "Greens", image: "https://images.unsplash.com/photo-1508747702-f520ea25d797?w=150" },
-            { id: 41, name: "Fenugreek Leaves (Methi)", price: 20, unit: "bunch", category: "Greens", image: "https://images.unsplash.com/photo-1576045057995-568f588f82fb?w=150" },
-            { id: 42, name: "Amaranthus Leaves", price: 20, unit: "bunch", category: "Greens", image: "https://images.unsplash.com/photo-1576045057995-568f588f82fb?w=150" },
-            { id: 43, name: "Ash Gourd", price: 30, unit: "kg", category: "Gourd", image: "https://images.unsplash.com/photo-1626200419199-391ae4be7a40?w=150" },
-            { id: 44, name: "Chayote (Chow Chow)", price: 40, unit: "kg", category: "Gourd", image: "https://images.unsplash.com/photo-1601004890684-d8cbf643f5f2?w=150" },
-            { id: 45, name: "Ivy Gourd (Tindora)", price: 45, unit: "kg", category: "Gourd", image: "https://images.unsplash.com/photo-1567670678854-325db7908c31?w=150" },
-            { id: 46, name: "Pointed Gourd (Parwal)", price: 55, unit: "kg", category: "Gourd", image: "https://images.unsplash.com/photo-1567670678854-325db7908c31?w=150" },
-            { id: 47, name: "Raw Papaya", price: 35, unit: "kg", category: "Root", image: "https://images.unsplash.com/photo-1566393028639-d108a42c46a7?w=150" },
-            { id: 48, name: "Raw Mango", price: 60, unit: "kg", category: "Herbs", image: "https://images.unsplash.com/photo-1590502593747-42a996133562?w=150" },
-            { id: 49, name: "Zucchini (Green)", price: 80, unit: "kg", category: "Gourd", image: "https://images.unsplash.com/photo-1604972688049-63ffb9d19a2e?w=150" },
-            { id: 50, name: "Celery", price: 50, unit: "pack", category: "Herbs", image: "https://images.unsplash.com/photo-1614777986387-015c2a89b6f6?w=150" },
-            { id: 51, name: "Leek", price: 60, unit: "kg", category: "Herbs", image: "https://images.unsplash.com/photo-1508747702-f520ea25d797?w=150" }
+        // CONFIGURATION
+        const MERCHANT_UPI = "sakthindex-6@oksbi";
+        const MERCHANT_NAME = "My Store";
+        const WHATSAPP_NUMBER = "918838090005"; // Formatted with country code 91
+
+        // SAMPLE PRODUCT CATALOG (Easily add or modify items here)
+        const products = [
+            { id: 1, name: "Fresh Farm Tomatoes", price: 40, unit: "1 kg", image: "https://images.unsplash.com/photo-1592924357228-91a4daadcfea?w=400&auto=format&fit=crop&q=60" },
+            { id: 2, name: "Organic Potatoes", price: 35, unit: "1 kg", image: "https://images.unsplash.com/photo-1518977676601-b53f82aba655?w=400&auto=format&fit=crop&q=60" },
+            { id: 3, name: "Red Onions", price: 50, unit: "1 kg", image: "https://images.unsplash.com/photo-1618512496248-a07fe83aa8cb?w=400&auto=format&fit=crop&q=60" },
+            { id: 4, name: "Baby Carrots", price: 60, unit: "500 g", image: "https://images.unsplash.com/photo-1598170845058-32b9d6a5da37?w=400&auto=format&fit=crop&q=60" },
+            { id: 5, name: "Green Broccoli", price: 80, unit: "1 pc", image: "https://images.unsplash.com/photo-1459411621453-7b03977f4bfc?w=400&auto=format&fit=crop&q=60" },
+            { id: 6, name: "Fresh Spinach", price: 25, unit: "1 bunch", image: "https://images.unsplash.com/photo-1576045057995-568f588f82fb?w=400&auto=format&fit=crop&q=60" }
         ];
 
-        // Initialize local database if empty
-        if (!localStorage.getItem('vegetables')) {
-            localStorage.setItem('vegetables', JSON.stringify(defaultVegetables));
-        }
-
-        let vegetables = JSON.parse(localStorage.getItem('vegetables'));
         let cart = {};
-        let currentCategory = 'all';
 
-        // Display Products
-        function renderProducts() {
-            const container = document.getElementById('product-container');
-            const searchQuery = document.getElementById('search-input').value.toLowerCase();
-            container.innerHTML = '';
-
-            const filtered = vegetables.filter(item => {
-                const matchesCategory = currentCategory === 'all' || item.category === currentCategory;
-                const matchesSearch = item.name.toLowerCase().includes(searchQuery);
-                return matchesCategory && matchesSearch;
-            });
-
-            filtered.forEach(item => {
-                const qty = cart[item.id] || 0;
-                const card = document.createElement('div');
-                card.className = 'product-card';
-                card.innerHTML = `
-                    <img src="${item.image}" alt="${item.name}" loading="lazy">
-                    <h3>${item.name}</h3>
-                    <p class="category-label">${item.category}</p>
-                    <div class="price">₹${item.price} / ${item.unit}</div>
-                    <div class="quantity-controls">
-                        <button onclick="updateCartQuantity(${item.id}, -1)">-</button>
-                        <span>${qty}</span>
-                        <button onclick="updateCartQuantity(${item.id}, 1)">+</button>
+        // Render Catalog on Load
+        function renderCatalog() {
+            const catalog = document.getElementById("catalog");
+            catalog.innerHTML = products.map(p => `
+                <div class="product-card">
+                    <img src="${p.image}" alt="${p.name}" class="product-image">
+                    <div class="product-details">
+                        <div>
+                            <div class="product-title">${p.name}</div>
+                            <div style="font-size: 0.85rem; color: #666; margin-bottom: 4px;">Pack size: ${p.unit}</div>
+                            <div class="product-price">₹${p.price}</div>
+                        </div>
+                        <button class="add-to-cart" onclick="addToCart(${p.id})">+ Add to Cart</button>
                     </div>
-                `;
-                container.appendChild(card);
-            });
+                </div>
+            `).join("");
         }
 
-        // Cart Actions
-        function updateCartQuantity(id, change) {
-            if (!cart[id]) cart[id] = 0;
-            cart[id] += change;
-            if (cart[id] <= 0) delete cart[id];
-            
+        // Cart Management
+        function addToCart(id) {
+            cart[id] = (cart[id] || 0) + 1;
             updateCartUI();
-            renderProducts();
+        }
+
+        function changeQty(id, delta) {
+            if (!cart[id]) return;
+            cart[id] += delta;
+            if (cart[id] <= 0) delete cart[id];
+            updateCartUI();
+            renderCartItems();
         }
 
         function updateCartUI() {
-            let count = 0;
-            let total = 0;
-            const container = document.getElementById('cart-items-container');
-            container.innerHTML = '';
-
-            Object.keys(cart).forEach(id => {
-                const item = vegetables.find(v => v.id == id);
-                if (item) {
-                    count += cart[id];
-                    total += item.price * cart[id];
-
-                    const cartItem = document.createElement('div');
-                    cartItem.className = 'cart-item';
-                    cartItem.innerHTML = `
-                        <div>
-                            <strong>${item.name}</strong><br>
-                            ₹${item.price} x ${cart[id]} ${item.unit}
-                        </div>
-                        <div>₹${item.price * cart[id]}</div>
-                    `;
-                    container.appendChild(cartItem);
-                }
-            });
-
-            document.getElementById('cart-count').innerText = count;
-            document.getElementById('cart-total').innerText = total;
+            const totalCount = Object.values(cart).reduce((sum, qty) => sum + qty, 0);
+            document.getElementById("cart-count").innerText = totalCount;
         }
 
-        function toggleCart() {
-            document.getElementById('cart-drawer').classList.toggle('open');
+        function calculateTotal() {
+            return Object.entries(cart).reduce((total, [id, qty]) => {
+                const product = products.find(p => p.id == id);
+                return total + (product ? product.price * qty : 0);
+            }, 0);
         }
 
-        function filterCategory(cat) {
-            currentCategory = cat;
-            document.querySelectorAll('.categories button').forEach(btn => btn.classList.remove('active'));
-            event.target.classList.add('active');
-            renderProducts();
-        }
-
-        // Open Payment Portal & Generate Dynamic UPI QR
-        function openPaymentPortal() {
-            if (Object.keys(cart).length === 0) {
-                alert("Your cart is empty!");
+        // Modal Controls
+        function openCart() {
+            const total = calculateTotal();
+            if (total === 0) {
+                alert("Your shopping cart is empty! Add some products first.");
                 return;
             }
 
-            const addressInput = document.getElementById('delivery-address');
-            if (!addressInput || !addressInput.value.trim()) {
-                alert("Please enter your complete delivery address before proceeding!");
-                if (addressInput) addressInput.focus();
-                return;
-            }
-
-            // Calculate exact total
-            let total = 0;
-            Object.keys(cart).forEach(id => {
-                const item = vegetables.find(v => v.id == id);
-                if (item) total += item.price * cart[id];
-            });
-
-            // 1. SET YOUR MERCHANDISE DETAILS HERE
-            const merchantUPI = "sakthindex-6@oksbi"; // Replace with your actual GPay / PhonePe UPI ID
-            const merchantName = "Fresh Grocer";   // Replace with your store name
-
-            // Generate UPI Payment Link & QR Code automatically
-            const upiLink = `upi://pay?pa=${merchantUPI}&pn=${encodeURIComponent(merchantName)}&am=${total}&cu=INR`;
+            renderCartItems();
+            
+            // Generate Dynamic UPI QR Code for exact cart total
+            const upiLink = `upi://pay?pa=${MERCHANT_UPI}&pn=${encodeURIComponent(MERCHANT_NAME)}&am=${total}&cu=INR`;
             const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(upiLink)}`;
+            document.getElementById("upi-qr").src = qrUrl;
 
-            // Populate Modal
-            document.getElementById('upi-qr-image').src = qrUrl;
-            document.getElementById('pay-amount').innerText = total;
-            document.getElementById('merchant-upi-text').innerText = merchantUPI;
-            document.getElementById('utr-number').value = ''; // Clear previous input
-
-            // Show Modal
-            document.getElementById('payment-modal').style.display = 'flex';
+            document.getElementById("cart-modal").style.display = "flex";
         }
 
-        function closePaymentPortal() {
-            document.getElementById('payment-modal').style.display = 'none';
+        function closeCart() {
+            document.getElementById("cart-modal").style.display = "none";
         }
 
-        // WhatsApp Checkout Engine with Payment Verification
-        function checkoutWhatsApp() {
-            const utr = document.getElementById('utr-number').value.trim();
-            if (!utr || utr.length < 8) {
-                alert("Please enter a valid Transaction ID / UTR Number after completing your payment!");
-                document.getElementById('utr-number').focus();
+        function renderCartItems() {
+            const container = document.getElementById("cart-items-list");
+            const total = calculateTotal();
+            
+            if (total === 0) {
+                closeCart();
+                updateCartUI();
                 return;
             }
 
-            const address = document.getElementById('delivery-address').value.trim();
-            
-            // 2. SET YOUR WHATSAPP BUSINESS NUMBER HERE (with country code, e.g., 919876543210)
-            const businessNumber = "918838090005"; 
-            
-            let message = "*New Paid Order - Fresh Grocer*\n\n";
-            message += `*Payment Status:* PAID ✅\n`;
-            message += `*Transaction / UTR No:* ${utr}\n\n`;
-            message += `*Delivery Address:*\n${address}\n\n`;
-            message += "*Order Summary:*\n";
-            
-            let total = 0;
-            let index = 1;
+            document.getElementById("cart-total-amount").innerText = total;
 
-            Object.keys(cart).forEach(id => {
-                const item = vegetables.find(v => v.id == id);
-                if (item) {
-                    const cost = item.price * cart[id];
-                    total += cost;
-                    message += `${index++}. *${item.name}* - ${cart[id]} ${item.unit} (₹${cost})\n`;
-                }
+            container.innerHTML = Object.entries(cart).map(([id, qty]) => {
+                const p = products.find(item => item.id == id);
+                return `
+                    <div class="cart-item">
+                        <div>
+                            <div style="font-weight: 600;">${p.name}</div>
+                            <div style="font-size: 0.85rem; color: #666;">₹${p.price} x ${qty} (${p.unit})</div>
+                        </div>
+                        <div class="cart-item-controls">
+                            <button class="qty-btn" onclick="changeQty(${id}, -1)">-</button>
+                            <span style="min-width: 20px; text-align: center; font-weight: 600;">${qty}</span>
+                            <button class="qty-btn" onclick="changeQty(${id}, 1)">+</button>
+                        </div>
+                    </div>
+                `;
+            }).join("");
+        }
+
+        // WhatsApp Order Submission
+        function submitOrder() {
+            const name = document.getElementById("customer-name").value.trim();
+            const address = document.getElementById("customer-address").value.trim();
+            const utr = document.getElementById("utr-number").value.trim();
+            const total = calculateTotal();
+
+            if (!name || !address || !utr) {
+                alert("Please fill in your Name, Delivery Address, and the 12-digit UPI UTR number to proceed.");
+                return;
+            }
+
+            if (utr.length < 8) {
+                alert("Please enter a valid Transaction ID / UTR number from your UPI app.");
+                return;
+            }
+
+            // Construct WhatsApp Message
+            let message = `*NEW PAID ORDER - ${MERCHANT_NAME}*\n\n`;
+            message += `*Customer:* ${name}\n`;
+            message += `*Address:* ${address}\n`;
+            message += `*Payment Status:* PAID ✅\n`;
+            message += `*UPI UTR / Ref No:* ${utr}\n\n`;
+            message += `*Order Summary:*\n`;
+
+            Object.entries(cart).forEach(([id, qty], index) => {
+                const p = products.find(item => item.id == id);
+                message += `${index + 1}. ${p.name} (${p.unit}) - ${qty} x ₹${p.price} = ₹${qty * p.price}\n`;
             });
 
-            message += `\n*Grand Total Paid: ₹${total}*\n\nPlease verify my payment UTR and confirm order dispatch!`;
-            
+            message += `\n*Grand Total Paid:* ₹${total}\n\n`;
+            message += `_Please verify payment UTR and confirm dispatch!_`;
+
+            // Open WhatsApp
             const encodedMessage = encodeURIComponent(message);
-            window.open(`https://api.whatsapp.com/send?phone=${businessNumber}&text=${encodedMessage}`, '_blank');
+            const whatsappUrl = `https://api.whatsapp.com/send?phone=${WHATSAPP_NUMBER}&text=${encodedMessage}`;
             
-            // Close portal and empty cart after successful redirection
-            closePaymentPortal();
+            window.open(whatsappUrl, "_blank");
+
+            // Optional: Clear cart after successful order redirect
             cart = {};
             updateCartUI();
-            toggleCart();
+            closeCart();
         }
 
-        // Listeners
-        document.getElementById('search-input').addEventListener('input', renderProducts);
-        
-        // Initial setup
-        window.onload = renderProducts;
+        // Initialize App
+        window.onload = renderCatalog;
     </script>
 </body>
 </html>
